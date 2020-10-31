@@ -5,9 +5,10 @@ name: parakeet-backend action
 
 on:
   push:
-    branches: [ default, main ]
   pull_request:
-    branches: [ default, main ]
+    branches: 
+      - default
+      - main
 
 jobs:
   build:

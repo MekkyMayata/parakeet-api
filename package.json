@@ -2,9 +2,12 @@
   "name": "parakeet-api",
   "version": "0.1.0",
   "description": "lit parakeet",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon —exec babel-node src/index.js",
+    "build-babel": "babel src/ -s -D -d dist --presets es2015,stage-0 --ignore node_modules",
+    "test": "nyc mocha --require @babel/register 'test/**test.js'",
+    "lint": "eslint \"src/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,21 @@
   "bugs": {
     "url": "https://github.com/MekkyMayata/parakeet-api/issues"
   },
-  "homepage": "https://github.com/MekkyMayata/parakeet-api#readme"
+  "homepage": "https://github.com/MekkyMayata/parakeet-api#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/register": "^7.12.1",
+    "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.12.1",
+    "mocha": "^8.2.0",
+    "nodemon": "^2.0.6",
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1"
+  }
 }

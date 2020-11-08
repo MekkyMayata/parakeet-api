@@ -7,7 +7,7 @@ const logger = (env) => {
 
     switch(env) {
         case 'development':
-            yields = new winston.logger({
+            yields = winston.createLogger({
                 transports: [
                     new winston.transports.Console({
                         level: 'debug',
@@ -30,7 +30,7 @@ const logger = (env) => {
             break;
 
         case 'test':
-            yields = new winston.logger({
+            yields = winston.createLogger({
                 transports: [
                     new winston.transports.Console({
                         level: 'debug',
@@ -53,7 +53,7 @@ const logger = (env) => {
             break;
         
         default:
-            yields = new winston.logger({
+            yields = winston.createLogger({
                 transports: [
                     new winston.transports.Console({
                         level: 'debug',

@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "bluebird": "^3.7.2",
     "express": "^4.17.1",
     "file-stream-rotator": "^0.5.7",
     "moment": "^2.29.1",

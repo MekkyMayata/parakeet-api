@@ -1,14 +1,17 @@
 import express from 'express';
+import config from '../src/config/config';
+// import database from '../src/app/utils/database';
 import expressConfig from './config/expressconfigs';
 import logger from './config/logger';
 
-const port = process.env.PORT || 5050;
+const ports = config.PORT || 5050;
 
 const app = express();
 expressConfig(app);
 
-app.listen(port);
+app.listen(ports);
 
-logger.info(`Parakeet API started on port ${port}`);
+let info = logger();
 
+info.info(`Parakeet API started on port ${ports}`);
 export default app;

@@ -1,0 +1,11 @@
+{
+	"dev": {
+		"ENV": "PARAKEET_DEV_DATABASE_URL"
+	},
+	"test": {
+		"ENV": "PARAKEET_TEST_DATABASE_URL"
+	},
+	"production": {
+		"ENV": "DATABASE_URL"
+	}
+}

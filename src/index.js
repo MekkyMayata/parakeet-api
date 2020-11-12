@@ -1,6 +1,5 @@
 import express from 'express';
 import config from '../src/config/config';
-// import database from '../src/app/utils/database';
 import expressConfig from './config/expressconfigs';
 import logger from './config/logger';
 

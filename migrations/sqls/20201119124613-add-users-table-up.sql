@@ -3,10 +3,10 @@
 --     CHECK (VALUE IN ( 'M', 'F'));
 
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
+    id VARCHAR(100) NOT NULL PRIMARY KEY,
     name VARCHAR, 
     username VARCHAR ( 50 ) UNIQUE NOT NULL,
-    password VARCHAR ( 50 ) NOT NULL,
+    password VARCHAR ( 255 ) NOT NULL,
     email VARCHAR ( 255 ) UNIQUE NOT NULL,
     telephone TEXT,
     gender CHAR,

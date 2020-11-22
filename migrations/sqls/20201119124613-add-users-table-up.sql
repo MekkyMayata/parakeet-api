@@ -1,7 +1,4 @@
 /* Replace with your SQL commands */
--- CREATE SCHEMA tmp;
--- SET search_path=tmp;
-
 -- CREATE DOMAIN gender CHAR(1)
 --     CHECK (VALUE IN ( 'M', 'F'));
 
@@ -12,11 +9,11 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR ( 50 ) NOT NULL,
     email VARCHAR ( 255 ) UNIQUE NOT NULL,
     telephone TEXT,
-    sex CHAR,
-    -- sex tmp.gender,
+    gender CHAR,
     website TEXT,
     bio TEXT,
     category VARCHAR ( 20 ) NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPTZ DEFAULT NOW()
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    unique (id)
 );

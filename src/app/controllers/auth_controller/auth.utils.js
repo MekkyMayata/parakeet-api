@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken';
 import config from '../../../config/index';
 import cryptoRandomString from 'crypto-random-string';
 
+const privateKey = fs.readFileSync(__dirname + '/private.key', 'utf-8');
+
 const bcryptSaltPassword = (password) => {
   const defer = q.defer();
   const saltRounds = 12;
@@ -40,7 +42,6 @@ const generateRandomString = (length = 20) => {
 }
 
 const generateJWTToken = (user) => {
-  const privateKey = fs.readFileSync(__dirname + '/private.key', 'utf-8');
   const signOptions = {
     issuer: config.auth.issuer,
     subject: config.auth.subject,
@@ -52,10 +53,36 @@ const generateJWTToken = (user) => {
   return token;
 }
 
+const extractUser = (req, res, next) => {
+  const verifyOptions = {
+    issuer: config.auth.issuer,
+    subject: config.auth.subject,
+    validity: config.auth.expiresIn
+  };
+
+  if (req.headers && req.headers.authorization) {
+    const token = req.headers.authorization;
+    jwt.verify(token, privateKey, verifyOptions, (err, decoded) => {
+      if(err) {
+        return res.status(403).json({
+          message: 'User is unauthorized'
+        });
+      }
+      req.user = decoded;
+      return next();
+    });
+  } else {
+    return res.status(403).json({
+      message: 'User is unauthorized'
+    });
+  }
+};
+
 export {
   bcryptSaltPassword,
   validateHash, 
   generateRandomString, 
-  generateJWTToken
+  generateJWTToken,
+  extractUser
 };
 

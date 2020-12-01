@@ -21,11 +21,12 @@ class User {
                 gender: gender, 
                 website: website, 
                 bio: bio,
-                category: category
+                category: category,
+                salt: salt
             } = userData;
             const user = await db.oneOrNone(
                 userQuery.createUser,
-                [id, name, username, password, email, telephone, gender, website, bio, category]
+                [id, name, username, password, email, telephone, gender, website, bio, category, salt]
                 );
             return user;
         } catch (err) {
@@ -52,7 +53,7 @@ class User {
     }
 
     /**
-     * @description - Fetch single user from database
+     * @description - Fetch single user by email
      * @param { String } email - the user email
      * @returns { Object } user object
      */
@@ -64,6 +65,71 @@ class User {
             logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`,
             'Error: Failed to fetch user from findUserByEmail method in user.model', err);
             throw new Error('Failed to fetch user');
+        }
+    }
+
+    /**
+     * @description - fetch user by token
+     * @param { String } token
+     * @returns { Object } user object
+     */
+    static async findUserByToken(token) {
+        try {
+            const user = await db.oneOrNone(userQuery.findUserByToken, [token]);
+            return user;
+        } catch (err) {
+            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}],
+            'Error: Failed to fetch user with provided token from findUserByToken method in user.model`, err);
+            throw new Error('Failed to find token for user')
+        }
+    }
+
+    /**
+     * @description - Verify user id
+     * @param { Number } id - user id
+     * @returns { Object } user object
+     */
+    static async verifyUserId(id) {
+        try {
+            const user = await db.oneOrNone(userQuery.verifyUserId, [id]);
+            return user;
+        } catch(err) {
+            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`,
+            'Error: Failed to verify user id from verifyUserId method in user.model', err);
+            throw new Error('Failed to verify user');
+        }
+    }
+
+    /**
+     * @description - save user password reset token
+     * @param { Number } id - user id
+     * @param { String } token - provided token
+     */
+    static async saveUserPasswordResetToken(id, token) {
+        try {
+            await db.oneOrNone(userQuery.saveUserPasswordResetToken, [token, moment(), id]);
+            return true;
+        } catch (err) {
+            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`,
+            'Error: Failed to save user password reset token from saveUserPasswordResettoken method in user.model', err);
+            throw new Error('Failed to save user password reset token');
+        }
+    }
+
+    /**
+     * @description - update user password credentials
+     * @param { Object } data - user data
+     * @returns { Boolean } true
+     */
+    static async updatePassword(data) {
+        try {
+            const { password, userId, salt } = data;
+            await db.none(userQuery.updatePassword, [null, null, salt, password, userId]);
+            return true;
+        } catch(err) {
+            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`, 
+            'Error: Failed to update user password from updatePassword method in user.model', err);
+            throw new Error('Failed to update user password');
         }
     }
 }

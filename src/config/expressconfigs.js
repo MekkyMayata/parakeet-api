@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import FilestreamRotator from 'file-stream-rotator';
 import morgan from 'morgan';
 import loggerInit from './logger';
+import authRoutes from '../app/routes/auth.route';
 
 
 // *************setup logs dir************
@@ -62,8 +63,17 @@ const expressConfig = (app) => {
 
         // next middleware layer
         next();
-
     })
+
+    // routes
+    app.use('/api/v1/auth', authRoutes);
+
+    app.use((req, res) => {
+        res.status(404).json({
+            message: 'Not Found',
+            status: 404
+        });
+    });
 }
 
 

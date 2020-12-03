@@ -1,12 +1,11 @@
 import q from 'q';
-import fs from 'fs';
 // import lodash from 'lodash';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../../../config/index';
 import cryptoRandomString from 'crypto-random-string';
 
-const privateKey = fs.readFileSync(__dirname + '/private.key', 'utf-8');
+const { SECRET } = config;
 
 const bcryptSaltPassword = (password) => {
   const defer = q.defer();
@@ -36,8 +35,8 @@ const validateHash = (plainText, salt, validHash) => {
   return defer.promise;
 }
 
-const generateRandomString = (length = 20) => {
-  const str = cryptoRandomString({ length });
+const generateRandomString = (length) => {
+  const str = cryptoRandomString(length);
   return str.toUpperCase();
 }
 
@@ -49,7 +48,7 @@ const generateJWTToken = (user) => {
     algorithm: 'RS256',
   };
   // =====> TODO: try using partial user payload
-  const token = jwt.sign(user, privateKey, signOptions);
+  const token = jwt.sign(user, SECRET, signOptions);
   return token;
 }
 
@@ -62,7 +61,7 @@ const extractUser = (req, res, next) => {
 
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization;
-    jwt.verify(token, privateKey, verifyOptions, (err, decoded) => {
+    jwt.verify(token, SECRET, verifyOptions, (err, decoded) => {
       if(err) {
         return res.status(403).json({
           message: 'User is unauthorized'

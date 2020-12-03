@@ -20,7 +20,8 @@ class UserService {
       const user = await User.createUser(data);
       return {
         success: true,
-        user
+        user,
+        token: generateJWTToken(user)
       };
     } catch(err) {
       return {

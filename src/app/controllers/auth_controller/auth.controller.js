@@ -4,7 +4,6 @@ import Validator from '../../utils/validator';
 import UserService from '../../services/user.service';
 import RegistrationError from '../../errors/registration.error';
 import { bcryptSaltPassword } from './auth.utils';
-import logger from '../../../config/logger';
 
 const { ERROR } = constants;
 
@@ -51,7 +50,7 @@ class AuthController {
       if (!result.success) { throw new RegistrationError(); }
 
       // exclude user secrets
-      const { user: newUser } = result;
+      const { user: newUser, token } = result;
       delete newUser.password;
       delete newUser.salt;
 
@@ -60,10 +59,11 @@ class AuthController {
         success: true,
         message: 'Registration success!',
         status: 200,
-        data: newUser
+        data: newUser,
+        token
       });
     } catch (err) {
-      logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`, 'Error: AuthController error', err);
+      global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] AuthController error resulting from ${err}`);
       return res.status(400).json({
         current_url: req.originalUrl,
         success: false,

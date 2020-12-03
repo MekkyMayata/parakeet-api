@@ -1,7 +1,6 @@
 import moment from 'moment';
 import db from '../utils/database';
 import userQuery from '../queries/user.query';
-import logger from '../../config/logger';
 
 class User {
     /**
@@ -26,12 +25,10 @@ class User {
             } = userData;
             const user = await db.oneOrNone(
                 userQuery.createUser,
-                [id, name, username, password, email, telephone, gender, website, bio, category, salt]
-                );
+                [id, name, username, password, email, telephone, gender, website, bio, category, salt]);
             return user;
         } catch (err) {
-            logger.error(`[${moment.format('DD-MM-YYYY, h:mm:ss')}]`,
-            'Error: Failed to create user from user.model', err);
+            global.logger.error(`[${moment.format('DD-MM-YYYY, h:mm:ss')}] Failed to create user from user.model: ${err}`);
             throw new Error('Failed to create user');
         }
     }
@@ -46,8 +43,7 @@ class User {
             const user = await db.oneOrNone(userQuery.findUserById, [id]);
             return user;
         } catch (err) {
-            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`, 
-            'Error: Failed to fetch user from findUserById method in user.model', err);
+            global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to fetch user from findUserById method in user.model: ${err}`);
             throw new Error('Failed to fetch user');
         }
     }
@@ -62,8 +58,7 @@ class User {
             const user = await db.oneOrNone(userQuery.findUserByEmail, [email]);
             return user;
         } catch (err)  {
-            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`,
-            'Error: Failed to fetch user from findUserByEmail method in user.model', err);
+            global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to fetch user from findUserByEmail method in user.model: ${err}`);
             throw new Error('Failed to fetch user');
         }
     }
@@ -78,8 +73,7 @@ class User {
             const user = await db.oneOrNone(userQuery.findUserByToken, [token]);
             return user;
         } catch (err) {
-            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}],
-            'Error: Failed to fetch user with provided token from findUserByToken method in user.model`, err);
+            global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to fetch user with provided token from findUserByToken method in user.model ${err}`);
             throw new Error('Failed to find token for user')
         }
     }
@@ -94,8 +88,7 @@ class User {
             const user = await db.oneOrNone(userQuery.verifyUserId, [id]);
             return user;
         } catch(err) {
-            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`,
-            'Error: Failed to verify user id from verifyUserId method in user.model', err);
+            global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to verify user id from verifyUserId method in user.model: ${err}`);
             throw new Error('Failed to verify user');
         }
     }
@@ -110,8 +103,7 @@ class User {
             await db.oneOrNone(userQuery.saveUserPasswordResetToken, [token, moment(), id]);
             return true;
         } catch (err) {
-            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`,
-            'Error: Failed to save user password reset token from saveUserPasswordResettoken method in user.model', err);
+            global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to save user password reset token from saveUserPasswordResettoken method in user.model: ${err}`);
             throw new Error('Failed to save user password reset token');
         }
     }
@@ -127,8 +119,7 @@ class User {
             await db.none(userQuery.updatePassword, [null, null, salt, password, userId]);
             return true;
         } catch(err) {
-            logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}]`, 
-            'Error: Failed to update user password from updatePassword method in user.model', err);
+            global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to update user password from updatePassword method in user.model: ${err}`);
             throw new Error('Failed to update user password');
         }
     }

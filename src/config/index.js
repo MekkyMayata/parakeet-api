@@ -12,7 +12,7 @@ const defaults = {
 }
 
 // configs for choosen environment
-const env = process.env.NODE_ENV || 'develpment';
+const env = process.env.NODE_ENV || 'development';
 
 let ENV_CONFIG = {};
 
@@ -21,10 +21,10 @@ switch(env) {
     case 'test':
         ENV_CONFIG = Object.assign(defaults, test);
         break;
-    case 'dev':
+    case 'development':
         ENV_CONFIG = Object.assign(defaults, dev);
         break;
-    case 'prod':
+    case 'production':
         ENV_CONFIG = Object.assign(defaults, prod);
         break;
     default: 

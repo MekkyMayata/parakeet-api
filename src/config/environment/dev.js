@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
-import { ConsoleTransportOptions } from 'winston/lib/winston/transports';
 
 dotenv.config();
 

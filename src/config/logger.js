@@ -13,7 +13,10 @@ const logger = (env) => {
                         level: 'debug',
                         handleExceptions: true,
                         json: false,
-                        colorize: true
+                        format: winston.format.combine(
+                            winston.format.colorize(),
+                            winston.format.simple()
+                        )
                     }),
                     new winston.transports.File({
                         level: 'info',
@@ -36,7 +39,10 @@ const logger = (env) => {
                         level: 'debug',
                         handleExceptions: true,
                         json: false,
-                        colorize: true
+                        format: winston.format.combine(
+                            winston.format.colorize(),
+                            winston.format.simple()
+                        )
                     }),
                     new winston.transports.File({
                         level: 'info',
@@ -59,22 +65,27 @@ const logger = (env) => {
                         level: 'debug',
                         handleExceptions: true,
                         json: false,
-                        colorize: true
+                        format: winston.format.combine(
+                            winston.format.colorize(),
+                            winston.format.simple()
+                        )
                     }),
                     new winston.transports.Console({
                         level: 'debug',
                         handleExceptions: true,
                         json: false,
-                        colorize: true
+                        format: winston.format.combine(
+                            winston.format.colorize(),
+                            winston.format.simple()
+                        )
                     })
                 ],
                 exitOnError: false
             });
     }
     yields.stream = {
-        // eslint-disable-next-line no-unused-vars
-        write: (message, encoding) => {
-            logger.info(message)
+        write: (message) => {
+            logger.info(message);
         }
     };
     return yields;

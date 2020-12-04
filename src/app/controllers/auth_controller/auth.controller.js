@@ -5,6 +5,8 @@ import UserService from '../../services/user.service';
 import RegistrationError from '../../errors/registration.error';
 import { bcryptSaltPassword } from './auth.utils';
 import LoginError from '../../errors/login.error';
+import PasswordResetError from '../../errors/password.error';
+import { encoder } from '../../utils/encoder.decoder';
 
 const { ERROR } = constants;
 
@@ -123,6 +125,107 @@ class AuthController {
         current_url: req.originalUrl,
         success: false,
         message: err.message ||  ERROR,
+        status: 400,
+        data: err.data || {},
+        code: err.code
+      });
+    }
+  }
+
+  /**
+   * @description process password reset and assign token
+   * @param { Object } req - request object
+   * @param { Object } res - response object
+   */
+  static async passwordReset(req, res) {
+    try {
+      let { body } = req;
+
+      // validate input
+      body = Validator.validatePasswordReset(body);
+      const { email } = body;
+
+      const userResult = UserService.fetchUserByEmail(email);
+      if (!userResult.success) { throw new PasswordResetError(); }
+      if (!userResult.user) { throw new PasswordResetError(`We couldn't find an account with that email address`); }
+
+      const { user } = userResult;
+
+      // create user token
+      const tokenValue = await UserService.createUserPasswordResetToken(user);
+      if (!tokenValue.success) { throw new PasswordResetError(ERROR); }
+      const { token } = tokenValue;
+
+      const arg = { token };
+      const argString = JSON.stringify(arg);
+      // eslint-disable-next-line no-unused-vars
+      const encryptedToken = encoder(argString);
+
+      /**
+       * *************************TODO**********************************
+       * implement mail and sms here
+       */
+
+      return res.status(200).json({
+        current_url: req.originalUrl,
+        success: true,
+        message: 'Password reset token sent successfully!',
+        status: 200,
+        data: { done: 'true' }
+      });
+    } catch (err) {
+      global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] AuthController error resulting from ${err}`);
+      return res.status(400).json({
+        current_url: req.originalUrl,
+        success: false,
+        message: err.message || ERROR,
+        status: 400,
+        data: err.data || {},
+        code: err.code
+      }); 
+    }
+  }
+
+  /**
+   * @description update user password
+   * @param { Object } req - request object
+   * @param { Object } res - response object
+   */
+  static async updatePassword(req, res) {
+    try {
+      let { body } = req;
+      
+      // validate input
+      body = Validator.validatePasswordResetCredentials(body);
+
+      const { password } = body;
+      const { salt, hash } = await bcryptSaltPassword(password);
+      
+      body.salt = salt;
+      body.password = hash;
+
+      const updateResult = await UserService.updateUserPassword(body);
+      if (!updateResult.success) { throw new Error(updateResult.message); }
+
+      /** 
+       *  ***********************TODO***************************
+       * SETUP MAILING ON SUCCESS
+      */
+
+
+      return res.status(200).json({
+        current_url: req.originalUrl,
+        success: true,
+        message: 'Password update success!',
+        status: 200,
+        data: { done: 'true' }
+      });
+    } catch (err) {
+      global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] AuthController error resulting from ${err}`);
+      return res.status(400).json({
+        current_url: req.originalUrl,
+        success: false,
+        message: err.message || ERROR,
         status: 400,
         data: err.data || {},
         code: err.code

@@ -69,6 +69,22 @@ class Validator {
 
      return fields;
    }
+   
+
+   static validatePasswordResetCredentials(fields) {
+     const schema = joi.object({
+       token: joi.string().required(),
+       password: joi.string().min(6).required(),
+       confirm_password: joi.any().valid(joi.ref('password')).required()
+     }).options({ abortEarly: false });
+
+     const result = schema.validate(fields);
+     if (result.error) {
+       const error = formatError(result.error.details);
+       throw new PasswordResetValidationError(error);
+     }
+     return fields;
+   }
 }
 
 export default Validator;

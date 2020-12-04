@@ -1,4 +1,4 @@
-import uudiv1 from 'uuid/v1';
+import uudiv4 from 'uuid/v4';
 import moment from 'moment';
 import config from '../../config/index';
 import User from '../models/user.model';
@@ -99,7 +99,7 @@ class UserService {
   static async createUserPasswordResetToken(user) {
     try {
       const { id } = user;
-      const token = uudiv1();
+      const token = uudiv4();
       await User.saveUserPasswordResetToken(id, token);
       return {
         success: true,

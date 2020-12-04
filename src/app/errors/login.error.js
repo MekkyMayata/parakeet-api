@@ -7,7 +7,8 @@ class LoginError extends Error {
     this.message = msg || 'User currently unable to login.';
     this.name = 'Login Error';
     this.code = 1003;
-    this.data = {}
+    this.data 
+    = {}
   }
 }
 

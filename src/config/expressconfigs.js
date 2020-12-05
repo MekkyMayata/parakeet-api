@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import FilestreamRotator from 'file-stream-rotator';
 import morgan from 'morgan';
+import compression from 'compression';
 import loggerInit from './logger';
 import authRoutes from '../app/routes/auth.route';
 
@@ -42,6 +43,9 @@ const expressConfig = (app) => {
     // http secure headers
     app.use(helmet());
     app.disable('x-powered-by');
+
+    // compress and reduce latency
+    app.use(compression());
 
     // parse application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({ extended: false }))

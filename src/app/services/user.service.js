@@ -186,7 +186,10 @@ class UserService {
   static async confirmUserPasswordToken(token) {
     try {
       const { token: decodedToken } = JSON.parse(decoder(token));
+
+      // find user
       const user = await User.findUserByToken(decodedToken);
+
       if (!user) { throw new Error('Invalid reset token provided'); }
       
       const tokenIsValid = this.verifyTokenExpiry(user);

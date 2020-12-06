@@ -9,7 +9,7 @@ const from = config.TWILIO_PHONE_NUMBER;
 const client = twilio(accountSid, twilioAuthToken);
 
 const sendSMS = async (message, phoneNumber) => {
-  global.logger( `Message: \n${message} \n sending to ${phoneNumber}`);
+  global.logger.info( `Message: \n${message} \n sending to: ${phoneNumber}`);
   const defer = q.defer();
   
   const phoneNumberArrayObject = phoneNumber.split('');
@@ -24,7 +24,7 @@ const sendSMS = async (message, phoneNumber) => {
   }).then((res) => {
     defer.resolve(res.sid);
   }).catch((err) => {
-    global.logger(`Error sending SMS to ${to}`, err);
+    global.logger.info(`Error sending SMS to ${to}`, err);
     defer.reject(err);
   });
 

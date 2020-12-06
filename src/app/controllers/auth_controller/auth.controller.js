@@ -7,6 +7,9 @@ import { bcryptSaltPassword } from './auth.utils';
 import LoginError from '../../errors/login.error';
 import PasswordResetError from '../../errors/password.error';
 import { encoder } from '../../utils/encoder.decoder';
+import sendgridMail from '../../lib/sendgrid.mail';
+import twilioSMS from '../../lib/twilio.sms';
+import config from '../../../config';
 
 const { ERROR } = constants;
 
@@ -145,8 +148,10 @@ class AuthController {
       body = Validator.validatePasswordReset(body);
       const { email } = body;
 
-      const userResult = UserService.fetchUserByEmail(email);
+      const userResult = await UserService.fetchUserByEmail(email);
+
       if (!userResult.success) { throw new PasswordResetError(); }
+
       if (!userResult.user) { throw new PasswordResetError(`We couldn't find an account with that email address`); }
 
       const { user } = userResult;
@@ -158,13 +163,26 @@ class AuthController {
 
       const arg = { token };
       const argString = JSON.stringify(arg);
-      // eslint-disable-next-line no-unused-vars
       const encryptedToken = encoder(argString);
 
       /**
        * *************************TODO**********************************
        * implement mail and sms here
        */
+      const url = `${config.APP_URL}/r?token=${encryptedToken}`;
+      const message = `Hello ${user.username}! Kindly click the link provided to reset your password: ${url}`;
+      const options = {
+        to: email,
+        from: config.SENDER_EMAIL,
+        subject: 'Password Reset on your leatspace account',
+        text: message,
+        html: message
+      };
+      await sendgridMail(options);
+
+      // sms
+      const { telephone: telephoneNumber } = user;
+      await twilioSMS(message, telephoneNumber);
 
       return res.status(200).json({
         current_url: req.originalUrl,
@@ -183,6 +201,40 @@ class AuthController {
         data: err.data || {},
         code: err.code
       }); 
+    }
+  }
+
+  /**
+   * @description - verify password reset token integrity 
+   * @param { Object } req - request object
+   * @param { Object } res - response object
+   */
+  static async confirmPasswordToken(req, res) {
+    try {
+      if (!(req.query && req.query.token)) { throw new PasswordResetError('Kindly provide a valid token'); }
+      const { token } = req.query;
+      
+      // find the user
+      const userPasswordTokenResult = await UserService.confirmUserPasswordToken(token);
+      if (!userPasswordTokenResult.success) { throw new PasswordResetError('Token is invalid'); }
+
+      return res.status(200).json({
+        current_url: req.originalUrl,
+        success: true,
+        message: 'Successfully verified password reset token',
+        status: 200,
+        data: { done: 'true' }
+      });
+    } catch (err) {
+      global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] AuthController error resulting from ${err}`);
+      return res.status(400).json({
+        current_url: req.originalUrl,
+        success: false,
+        message: err.message || ERROR,
+        status: 400,
+        data: err.data || {},
+        code: err.code
+      });
     }
   }
 
@@ -211,7 +263,17 @@ class AuthController {
        *  ***********************TODO***************************
        * SETUP MAILING ON SUCCESS
       */
+      const { email } = updateResult.data;
 
+      const message = `Password update successful! You can now login with your new password`;
+      const options = {
+        to: email,
+        from: config.SENDER_EMAIL,
+        subject: 'Password Update',
+        text: message,
+        html: message
+      };
+      await sendgridMail(options);
 
       return res.status(200).json({
         current_url: req.originalUrl,

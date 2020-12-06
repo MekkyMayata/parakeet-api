@@ -14,7 +14,7 @@ const sendgridMail = (options) => {
     html: options.html
   };
 
-  global.logger(JSON.stringify(msg, null, '\t'));
+  global.logger.info(JSON.stringify(msg, null, '\t'));
 
   sendgrid.send(msg)
   .then(() => {

@@ -10,8 +10,8 @@
             "safari": "11.1",
             "node": "current"
           },
-          "useBuiltIns": "usage",
-          "corejs": "3.6.5"
+          "useBuiltIns": "entry",
+          "corejs": "^3.8.1"
         }
       ]
     ]

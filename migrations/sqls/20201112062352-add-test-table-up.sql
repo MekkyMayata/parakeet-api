@@ -1,8 +1,8 @@
 /* Replace with your SQL commands */
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS testUsers (
     id SERIAL,
     name VARCHAR(255)
 );
 
-INSERT INTO users (name)
+INSERT INTO testUsers (name)
     VALUES ('Alice'), ('Jenny'), ('Winston'), ('Jane');

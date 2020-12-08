@@ -107,3 +107,7 @@ dist
 .vscode
 package-lock.json
 build/
+/log/
+
+# private key
+private.key

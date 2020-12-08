@@ -3,7 +3,7 @@ import fs from 'fs';
 
 dotenv.config();
 
-const secret = fs.readFileSync(__dirname + '/private.key', 'utf-8');
+const secret = fs.readFileSync(__dirname + '/private.key', 'utf-8') || 'tests-secret';
 
 const development = {
     ENVIRONMENT: 'development',

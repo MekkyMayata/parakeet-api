@@ -9,7 +9,7 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel src/ -s -D -d --out-dir build --ignore node_modules",
     "build": "npm run clean && npm run build-babel",
-    "test": "nyc mocha --require @babel/register 'test/**test.js'",
+    "test": "nyc mocha --require @babel/register 'test/**/**test.js'",
     "lint": "eslint \"src/**/*.js\""
   },
   "repository": {

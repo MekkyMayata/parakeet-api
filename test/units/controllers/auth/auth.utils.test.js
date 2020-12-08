@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import "core-js/stable";
+import "regenerator-runtime/runtime"
 import { expect } from 'chai';
 import sinon from 'sinon';
 import * as authUtilModule from '../../../../src/app/controllers/auth_controller/auth.utils';

@@ -8,7 +8,11 @@ const defaults = {
         subject: 'LoginToken',
         expiresIn: '720h'
     },
-    passwordResetTokenExpiresIn: 24 // hrs
+    passwordResetTokenExpiresIn: 24, // hrs
+    AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME,
+    AWS_S3_KEY: process.env.AWS_S3_KEY,
+    AWS_S3_SECRET: process.env.AWS_S3_SECRET,
+    AWS_S3_BUCKET_REGION: process.env.AWS_S3_BUCKET_REGION,
 }
 
 // configs for choosen environment

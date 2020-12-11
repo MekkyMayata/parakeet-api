@@ -4,6 +4,7 @@ import formatError from '../errors/utils/format.errors';
 import LoginValidationError from '../errors/login.validation.error';
 import RegistrationValidationError from '../errors/registration.validation.error';
 import PasswordResetValidationError from '../errors/password.reset.validation.error';
+import ImageValidationError from '../errors/image.validation.error';
 
 // get the default user categories
 const { USER_CATEGORIES } = constants;
@@ -85,6 +86,22 @@ class Validator {
      }
      return fields;
    }
+
+  static validateImagePost(fields) {
+    const schema = joi.object({
+      post_path: joi.string().uri().required(),
+      post_caption: joi.string(),
+      post_latitude: joi.number(),
+      post_longitude: joi.number()
+    }).options({ abortEarly: false });
+
+    const result = schema.validate(fields);
+    if (result.error) {
+      const error = formatError(result.error.details);
+      throw new ImageValidationError(error);
+    }
+    return fields;
+  }
 }
 
 export default Validator;

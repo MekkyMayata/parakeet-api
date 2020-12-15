@@ -3,16 +3,14 @@ import fs from 'fs';
 
 dotenv.config();
 
-let secret = 'testEnvironmentSecret';
-
-if(fs.readFileSync(__dirname + '/private.key', 'utf-8')) {
-    secret = fs.readFileSync(__dirname + '/private.key', 'utf-8');
-}
+const secret = fs.readFileSync(__dirname + '/private.key', 'utf-8');
+const publicKey = fs.readFileSync(__dirname + '/public.key', 'utf-8');
 
 const development = {
     ENVIRONMENT: 'development',
     DATABASE_URL: process.env.PARAKEET_DEV_DATABASE_URL,
     SECRET: secret,
+    PUBLICKEY: publicKey,
     APP_URL: 'https://parakeetapi.com',
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,

@@ -4,7 +4,6 @@
 name: parakeet-backend action
 
 on:
-  push:
   pull_request:
     branches: 
       - default

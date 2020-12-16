@@ -4,7 +4,7 @@ import formatError from '../errors/utils/format.errors';
 import LoginValidationError from '../errors/login.validation.error';
 import RegistrationValidationError from '../errors/registration.validation.error';
 import PasswordResetValidationError from '../errors/password.reset.validation.error';
-import ImageValidationError from '../errors/image.validation.error';
+import ImageValidationError from '../errors/post.validation.error';
 
 // get the default user categories
 const { USER_CATEGORIES } = constants;

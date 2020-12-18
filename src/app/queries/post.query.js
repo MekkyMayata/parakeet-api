@@ -6,17 +6,14 @@ const query = {
     RETURNING *
   `,
   deleteImagePostById: `
-      DELETE FROM posts 
+      UPDATE posts SET isDeleted = TRUE
       WHERE post_id = $1 AND user_id = $2
   `,
-  findImagePostById:  `
-      SELECT * FROM posts WHERE post_id = $1
-  `,
-  verifyImagePostById: `
-      SELECT * FROM posts WHERE post_id = $1
+  fetchPostById:  `
+      SELECT * FROM posts WHERE post_id = $1 AND isDeleted = FALSE
   `,
   findImagePostByPath: `
-      SELECT * FROM posts WHERE post_path = $1
+      SELECT * FROM posts WHERE post_path = $1 AND isDeleted = FALSE
   `,
   fetchPosts: `
       SELECT
@@ -32,6 +29,7 @@ const query = {
       FROM posts
       INNER JOIN users ON users.id = posts.user_id
       WHERE posts.user_id = $1
+      AND posts.isDeleted = FALSE
       ORDER BY posts.post_date DESC
       OFFSET $2
       LIMIT $3
@@ -40,6 +38,7 @@ const query = {
       SELECT count(*) AS count 
       FROM posts
       INNER JOIN users ON users.id = posts.user_id
+      WHERE posts.isDeleted = FALSE
   `
 }
 

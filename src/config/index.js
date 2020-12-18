@@ -6,8 +6,9 @@ const defaults = {
     auth: {
         issuer: 'parakeet',
         subject: 'LoginToken',
-        expiresIn: '720h'
+        expiresIn: '24h'
     },
+    paginationLimit: 50,
     passwordResetTokenExpiresIn: 24, // hrs
     AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME,
     AWS_S3_KEY: process.env.AWS_S3_KEY,

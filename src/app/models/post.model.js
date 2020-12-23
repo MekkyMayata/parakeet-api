@@ -6,7 +6,7 @@ class Post {
   /**
    * @description - Creates a new post on the database
    * @param { Object } postData - the post records
-   * @returns { Object } created post records or error
+   * @returns { Object } created post records
    */
   static async createNewPost(postData) {
     try {

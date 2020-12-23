@@ -34,6 +34,7 @@ const query = {
       OFFSET $2
       LIMIT $3
   `,
+  // this query is incomplete!
   getPostsCount: `
       SELECT count(*) AS count 
       FROM posts

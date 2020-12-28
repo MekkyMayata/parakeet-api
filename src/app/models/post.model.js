@@ -85,7 +85,7 @@ class Post {
     try {
       const { userId: user_id, offset, limit } = data;
       const posts = await db.any(postQuery.fetchPosts, [user_id, offset, limit]);
-      const count = await db.oneOrNone(postQuery.getPostsCount);
+      const count = await db.oneOrNone(postQuery.getPostsCount, [user_id]);
       return {
         posts,
         count

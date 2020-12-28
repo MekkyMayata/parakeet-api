@@ -6,7 +6,8 @@ const codes = {
   1004: 'PASSWORD VALIDATION ERROR',
   1005: 'PASSWORD ERROR',
   1006: 'POST VALIDATION ERROR',
-  1007: 'POST ERROR'
+  1007: 'POST ERROR',
+  1008: 'FOLLOW ERROR'
 }
 
 export default codes;

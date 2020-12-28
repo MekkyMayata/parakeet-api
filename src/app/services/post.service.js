@@ -10,7 +10,7 @@ class PostService {
   /**
    * @description - creates a new image post
    * @param { Object } data - obtained post details
-   * @returns { Object } { success: true, user }
+   * @returns { Object } { success: true, post }
    */
   static async createNewPost(data) {
     try {

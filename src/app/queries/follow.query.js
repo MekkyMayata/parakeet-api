@@ -38,7 +38,7 @@ const query = {
     user_id 
   FROM user_followers
   INNER JOIN users ON users.id = user_followers.user_id
-  WHERE users_followers.follower_id = $1
+  WHERE users_followers.user_id = $1
   ORDER BY user_followers.followed_at DESC
   OFFSET $2
   LIMIT $3
@@ -58,3 +58,4 @@ const query = {
 }
 
 export default query;
+

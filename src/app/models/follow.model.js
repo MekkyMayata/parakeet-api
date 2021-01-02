@@ -72,7 +72,7 @@ class Follow {
     try {
       const { userId: id, offset, limit }  = data;
       const followersResult = await db.any(followerQuery.fetchFollowers, [id, offset, limit]);
-      const followersCount = await db.oneOrNone(followerQuery.getFollowersCount);
+      const followersCount = await db.oneOrNone(followerQuery.getFollowersCount, [id]);
       return {
         followersResult,
         followersCount
@@ -86,7 +86,7 @@ class Follow {
   static async fetchFollowing(data) {
     try {
       const { userId: id, offset, limit } = data;
-      const followingResult = await db.any(followerQuery.fetchFollowing, [id, offset, limit]);
+      const followingResult = await db.any(followerQuery.fetchFollowing, [id, offset, limit])
       const followingCount = await db.oneOrNone(followerQuery.getFollowingCount, [id]);
       return {
         followingResult,
@@ -101,11 +101,13 @@ class Follow {
   static async fetchFollower(data) {
     try {
       const {
-        user_id:user_id,
+        userId: user_id,
         follow_id: follower_id
       } = data;
       const followingResult = await db.oneOrNone(followerQuery.fetchFollower, [user_id, follower_id]);
-      return followingResult;
+      return {
+        followingResult
+      };
     } catch (err) {
       global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to fetch user follower from Follow model: ${err}`);
       throw new Error('Failed to fetch user follower');

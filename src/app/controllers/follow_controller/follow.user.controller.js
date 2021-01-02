@@ -30,7 +30,8 @@ class FollowController {
 
       // already following?
       const followingResult = await FollowService.fetchFollower(data);
-      if(followingResult) { throw new FollowError('Already following user'); }
+      if(followingResult.followingResult != null ) { 
+        throw new FollowError('Already following user'); }
 
       const followResult = await FollowService.followUser(data);
       const { followResult: follow } = followResult;

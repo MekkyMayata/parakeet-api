@@ -13,7 +13,7 @@ class UnfollowUserController {
       
       data.username = req.query.unfollow;
       const followingResult = await FollowService.fetchUserByUsername(data);
-      if (!followingResult.user) { throw new Error();}
+      if (!followingResult.user) { throw new Error('currently not following user');}
 
       const { id: follower_id } = followingResult.user;
       data.follow_id = follower_id;

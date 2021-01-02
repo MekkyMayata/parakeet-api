@@ -7,6 +7,7 @@ import compression from 'compression';
 import loggerInit from './logger';
 import authRoutes from '../app/routes/auth.route';
 import postRoutes from '../app/routes/post.route';
+import followRoutes from '../app/routes/follow.route';
 
 
 // *************setup logs dir************
@@ -73,6 +74,7 @@ const expressConfig = (app) => {
     // routes
     app.use('/api/v1/auth', authRoutes);
     app.use('/api/v1/post', postRoutes);
+    app.use('/api/v1/', followRoutes);
 
     app.use((req, res) => {
         res.status(404).json({

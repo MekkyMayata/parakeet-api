@@ -58,7 +58,7 @@ class GetFollowersController {
         success: true,
         message: 'Fetched follower successfully',
         status: 200,
-        data: followerResult.data
+        data: followerResult.followingResult
       });
     } catch (err) {
       global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] GetFollowersController error resulting from ${err}`);

@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [10.x, 12.x, 15.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,9 +28,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build --if-present
+    - name: spin up test public and private keys
+      working-directory: ./src/app/config/environment
     - run: |
         echo "Now spanning test environment public and private keys"
         chmod +x ./scripts/testKey.sh
-        cd ../../src/config/environment
         ./scripts/testKey.sh
     - run: npm run test

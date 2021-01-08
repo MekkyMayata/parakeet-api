@@ -47,6 +47,7 @@ jobs:
       run: |
         cd scripts/
         echo "Now spanning test environment public and private keys"
-        chmod +x ./testKey.sh
-        ./scripts/testKey.sh
+        chmod +x testKey.sh
+        ls
+        ./testKey.sh
         npm run test

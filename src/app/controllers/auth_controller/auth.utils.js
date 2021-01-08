@@ -81,11 +81,17 @@ const extractUser = (req, res, next) => {
   }
 };
 
+const determineBadge = (data) => {
+  // TODO
+  return data
+}
+
 export {
   bcryptSaltPassword,
   validateHash, 
   generateRandomString, 
   generateJWTToken,
-  extractUser
+  extractUser,
+  determineBadge
 };
 

@@ -125,6 +125,20 @@ class PostService {
     }
   }
 
+  static async updatePostLikes(data) {
+    try {
+      const updateResult = await Post.updatePostLikes(data);
+      return {
+        success: true,
+        updateResult
+      };
+    } catch (err) {
+      return {
+        success: false,
+        message: err.message
+      };
+    }
+  }
 }
 
 export default PostService

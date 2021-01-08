@@ -14,6 +14,10 @@ const defaults = {
     AWS_S3_KEY: process.env.AWS_S3_KEY,
     AWS_S3_SECRET: process.env.AWS_S3_SECRET,
     AWS_S3_BUCKET_REGION: process.env.AWS_S3_BUCKET_REGION,
+    PUSHER_APP_ID: process.env.PUSHER_APP_ID,
+    PUSHER_APP_KEY: process.env.PUSHER_APP_KEY,
+    PUSHER_APP_SECRET: process.env.PUSHER_APP_SECRET,
+    PUSHER_APP_CLUSTER: process.env.PUSHER_APP_CLUSTER
 }
 
 // configs for choosen environment

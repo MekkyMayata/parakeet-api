@@ -5,7 +5,6 @@
 # environment
 
 cd ../src/config/environment/
-pwd
 openssl genrsa -out test_privates.key 1024
-openssl rsa -in test_private.key -out test_publics.key -pubout -outform PEM
+openssl rsa -in test_privates.key -out test_publics.key -pubout -outform PEM
 exit 0

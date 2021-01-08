@@ -50,4 +50,5 @@ jobs:
         chmod +x testKey.sh
         ls
         ./testKey.sh
+        npm install
         npm run test

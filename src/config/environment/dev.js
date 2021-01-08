@@ -7,7 +7,7 @@ let secret = ''
 let publicKey = ''
 
 const checker = () => {
-    if (!(fs.readFileSync(__dirname + '/private.key', 'utf-8'))) {
+    if (!(fs.existsSync(__dirname + '/private.key'))) {
         secret = fs.readFileSync(__dirname + '/test_privates.key', 'utf-8');
         publicKey = fs.readFileSync(__dirname + '/test_publics.key', 'utf-8');
 

@@ -7,7 +7,8 @@ const codes = {
   1005: 'PASSWORD ERROR',
   1006: 'POST VALIDATION ERROR',
   1007: 'POST ERROR',
-  1008: 'FOLLOW ERROR'
+  1008: 'FOLLOW ERROR',
+  1009: 'LIKE ERROR'
 }
 
 export default codes;

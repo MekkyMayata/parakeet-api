@@ -4,10 +4,12 @@
 name: parakeet-backend action
 
 on:
+  push:
   pull_request:
     branches: 
       - default
       - main
+      - ft-badges
 
 jobs:
   build:
@@ -26,4 +28,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run build --if-present
+    - run: |
+        echo "Now spanning test environment public and private keys"
+        chmod +x ./scripts/testKey.sh
+        ./scripts/testKey.sh
     - run: npm run test

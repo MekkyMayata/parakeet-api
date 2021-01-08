@@ -30,7 +30,7 @@ jobs:
     - run: npm run build --if-present
 
   test:
-    name: running unit tests
+    needs: [build]
     runs-on: ubuntu-latest
 
     strategy:
@@ -40,12 +40,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      working-directory: ./src/app/config/environment
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: |
+    - name: run tests
+      run: |
+        cd ~/scripts
         echo "Now spanning test environment public and private keys"
-        chmod +x ./scripts/testKey.sh
+        chmod +x ./testKey.sh
         ./scripts/testKey.sh
-    - run: npm run test
+        npm run test

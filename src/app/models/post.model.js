@@ -96,6 +96,21 @@ class Post {
     }
     
   }
+
+  static async updatePostLikes(data) {
+    try {
+      const { likes_counter, post_id } = data;
+      // *******************should db method be oneOrNone instead?***********************
+      const updateResult = await db.any(postQuery.updateLikesCount, [likes_counter, post_id]);
+
+      return {
+        updateResult
+      };
+    } catch (err) {
+      global.logger.error(`[${moment().format('DD-MM-YYYY, h:mm:ss')}] Failed to update user post likes from updatePostLikes method in posts.model: ${err}`);
+      throw new Error('Failed to fetch user posts'); 
+    }
+  }
 }
 
 export default Post;

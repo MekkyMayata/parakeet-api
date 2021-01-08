@@ -40,6 +40,11 @@ const query = {
       INNER JOIN users ON users.id = posts.user_id
       WHERE posts.isDeleted = FALSE
       AND posts.user_id = $1
+  `,
+  updateLikesCount: `
+    UPDATE posts
+    SET likes_count = likes_count + $1
+    WHERE post_id = $2
   `
 }
 

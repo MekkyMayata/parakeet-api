@@ -3,12 +3,32 @@ import fs from 'fs';
 
 dotenv.config();
 
-const secret = fs.readFileSync(__dirname + '/private.key', 'utf-8');
+let secret = ''
+let publicKey = ''
+
+const checker = () => {
+    if (!(fs.existsSync(__dirname + '/private.key'))) {
+        secret = fs.readFileSync(__dirname + '/test_privates.key', 'utf-8');
+        publicKey = fs.readFileSync(__dirname + '/test_publics.key', 'utf-8');
+
+    }
+    else {
+        secret = fs.readFileSync(__dirname + '/private.key', 'utf-8');
+        publicKey = fs.readFileSync(__dirname + '/public.key', 'utf-8');
+    }
+    return {
+        secret_key: secret,
+        public_key: publicKey
+    }
+}
+
+const checkerResult = checker();
 
 const production = {
     ENVIRONMENT: 'production',
     DATABASE_URL: process.env.DATABASE_URL,
-    SECRET: secret,
+    SECRET: checkerResult.secret_key,
+    PUBLICKEY: checkerResult.public_key,
     APP_URL: 'https://parakeetapi.com',
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,

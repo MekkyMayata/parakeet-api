@@ -12,7 +12,8 @@ const query = {
   `,
   // ******************verify style and usefuleness*************
   fetchLikes: `
-    SELECT * FROM likes
+    SELECT post_id, like_value
+    FROM likes
     WHERE user_id = $1
     AND like_value = TRUE
   `,

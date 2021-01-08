@@ -29,9 +29,7 @@ class CreatePostController {
       body.post_id = postId;
 
       const result = await PostService.createNewPost(body);
-      if (!result.success) { 
-
-        throw new PostError(); }
+      if (!result.success) { throw new PostError(); }
 
       const { post: newPost } = result;
 

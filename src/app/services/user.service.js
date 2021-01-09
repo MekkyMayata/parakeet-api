@@ -13,7 +13,7 @@ class UserService {
   /**
    * @description create new user
    * @param { Object } data - obtained user details
-   * @returns { Object } { success: true, user }
+   * @returns { Object } { success: true, user, token }
    */
   static async CreateUser(data) {
     try {

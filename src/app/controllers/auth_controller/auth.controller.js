@@ -115,6 +115,8 @@ class AuthController {
       if (!tokenResult.success) { throw new LoginError(); }
       const { token } = tokenResult;
 
+      // ***************fire badge function here*********************
+
       return res.status(200).json({
         current_url: req.originalUrl,
         success: true,

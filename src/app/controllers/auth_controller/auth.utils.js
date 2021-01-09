@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import config from '../../../config/index';
 import cryptoRandomString from 'crypto-random-string';
 
-const { SECRET } = config;
+const { SECRET, PUBLICKEY } = config;
 
 const bcryptSaltPassword = (password) => {
   const defer = q.defer();
@@ -56,18 +56,22 @@ const extractUser = (req, res, next) => {
   const verifyOptions = {
     issuer: config.auth.issuer,
     subject: config.auth.subject,
-    validity: config.auth.expiresIn
+    validity: config.auth.expiresIn,
+    algorithm: 'RS256',
   };
 
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization;
-    jwt.verify(token, SECRET, verifyOptions, (err, decoded) => {
+    jwt.verify(token, PUBLICKEY, verifyOptions, (err, decoded) => {
       if(err) {
-        return res.status(403).json({
-          message: 'User is unauthorized'
+        return res.status(401).json({
+          message: 'Your session has ended. Kindly login again.'
         });
       }
-      req.user = decoded;
+      req.user =  {
+        decoded,
+        token
+      }
       return next();
     });
   } else {
@@ -77,11 +81,17 @@ const extractUser = (req, res, next) => {
   }
 };
 
+const determineBadge = (data) => {
+  // TODO
+  return data
+}
+
 export {
   bcryptSaltPassword,
   validateHash, 
   generateRandomString, 
   generateJWTToken,
-  extractUser
+  extractUser,
+  determineBadge
 };
 

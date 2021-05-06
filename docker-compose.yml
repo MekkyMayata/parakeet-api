@@ -1,0 +1,60 @@
+version: "3.7"
+services:
+  parakeet:
+    container_name: parakeet-backend
+    build:
+      context: .
+    environment:
+      DB_SCHEMA: postgres
+      DB_USER: postgres
+      DB_HOST: postgres
+      PARAKEET_DEV_DATABASE_URL: postgres://postgres:postgres@db:5432/parakeet_dev_db
+    depends_on:
+      - db
+    # command: ["./wait-for-it/wait-for-it.sh", "-t", "20", "db:5432", "--", "npm", "run", "migrate"]
+    command: >
+      bash -c "./wait-for-it/wait-for-it.sh -t 20 db:5432 -- npm run migrate && npm run dev"
+    links:
+      - "db:database"
+    ports:
+      - 4440:4440
+    networks:
+      - parakeet-network
+
+  db:
+    container_name: parakeet-db
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: parakeet_dev_db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - parakeet-network
+  
+  # migration:
+  #   build:
+  #     context: .
+  #   environment:
+  #     DB_SCHEMA: postgres
+  #     DB_USER: postgres
+  #     DB_HOST: postgres
+  #     PARAKEET_DEV_DATABASE_URL: postgres://postgres:postgres@db:5432/parakeet_dev_db
+  #   image: parakeet:latest
+  #   command: ["./wait-for-it/wait-for-it.sh", "-t", "20", "db:5432", "--", "npm", "run", "migrate"]
+  #   links:
+  #     - "db:database"
+  #   depends_on:
+  #     - db
+  #     - parakeet
+      # - db:
+      #     condition: service_healthy
+      # - parakeet:
+      #     condition: service_healthy
+
+networks:
+  parakeet-network:
+    driver: bridge
